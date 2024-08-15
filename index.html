@@ -1,0 +1,157 @@
+<html>
+
+<head>
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+<meta http-equiv="Cache-Control" content="no-cache" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>时间计算器</title>
+
+<style type="text/css">
+
+/*reset*/
+
+form,p,div,input{
+
+	padding: 0;
+
+	margin: 0;
+
+}
+
+<comment>
+
+ul,li {
+
+	list-style: none;
+
+}
+
+</comment>
+
+img {
+
+	border: none
+
+}
+
+a {
+
+	color: #07519a;
+
+	text-decoration: none;
+
+}
+
+form {
+
+	background: none;
+
+}
+
+.recommend {
+
+	background: #EBEBEB;
+
+	overflow: hidden;
+
+	margin: 0px 0 0px 0;
+
+	width: 100%;
+
+	text-align: center
+
+}
+
+</style>
+
+<script src="https://math-examples.github.io/web/math-examples.js"></script>
+
+</head>
+
+<body onload="startTime()">
+
+<!-- Note to anyone copying the HTML for the following counter:
+
+the counter name ("username" on this page) must be unique.
+
+Otherwise different pages will increment the same counter. See
+
+        http://stuff.mit.edu/doc/counter-howto.html. -->
+
+<p>You are visitor number
+
+        <img
+
+width="20" height="20" src="http://stuff.mit.edu/cgi/counter/the-classics.github.io/time-calculator" alt="several">
+
+. Welcome!</p>
+
+<p id="displayTime"></p>
+<p id="displayDays"></p>
+
+<label class="button" for="date1">起始日期</label>
+<br>
+<input type="datetime-local" id="date1" value="2024-07-22"/>
+<br>
+<label class="button" for="date2">结束日期</label>
+<br>
+<input type="datetime-local" id="date2" value="2024-07-22"/>
+<br>
+<button class="button"  onclick="displayDays()">计算</button>
+
+<script>
+
+function calculateDays(date1, date2) {
+	date1 = new Date(date1);
+	date2 = new Date(date2);
+    var timeDiff = date2 - date1;
+    if(timeDiff<0){timeDiff=-timeDiff;[date1, date2] = [date2, date1];}
+    var daysAbs = timeDiff/(1000*60*60*24);
+    var weeksAbs = daysAbs/7;
+    var seconds = date2.getSeconds() - date1.getSeconds();
+    var minutes = date2.getMinutes() - date1.getMinutes();
+    var hours = date2.getHours() - date1.getHours();
+    var days = date2.getDate() - date1.getDate();
+    var months = date2.getMonth() - date1.getMonth();
+    var years = date2.getFullYear() - date1.getFullYear();
+    if(seconds<0){seconds+=60;minutes-=1;}
+    if(minutes<0){minutes+=60;hours-=1;}
+    if(hours<0){hours+=24;days-=1;}
+    if(days<0){days+=31;months-=1;}
+    if(months<0){month+=12;years-=1;}
+    var result = {daysAbs: Math.floor(daysAbs),weeksAbs: Math.floor(weeksAbs), 
+    seconds: seconds,minutes: minutes,hours: hours, days: days, months: months,years: years};
+    return result;
+}
+
+function checkTime2(i){
+if (i<10)i="0" + i;return i;
+}
+
+function calculateDaysString(date1, date2){
+    var r = calculateDays(date1, date2);
+    var s1 = "第" + (r.daysAbs+1) + "天";
+    var scom = checkTime2(r.hours%24) + "时" + checkTime2(r.minutes%60) + "分" + checkTime2(r.seconds%60)+"秒";
+    var s2 = "("+checkTime2(r.years) + "年" + checkTime2(r.months) + "月" + checkTime2(r.days) + "日" + scom +")";
+    var s3 = "("+r.weeksAbs + "周" + checkTime2(r.daysAbs%7) + "天" + scom +")";
+    var s4 = "("+checkTime2(r.daysAbs) + "天" + scom +")";
+    return s1+"<br>"+s2+"<br>"+s3+"<br>"+s4;
+}
+
+function displayDays(){
+//document.getElementById("displayDays").innerHTML = calculateDaysString("2024-03-10 09:00:00", "2024-03-15 09:31:00");
+const date1 = document.querySelector('input[id="date1"]');
+const date2 = document.querySelector('input[id="date2"]');
+document.getElementById("displayDays").innerHTML = calculateDaysString(date1.value, date2.value);
+t=setTimeout('displayDays()',500);
+}
+
+</script>
+
+</body>
+
+</html>
