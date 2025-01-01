@@ -120,7 +120,7 @@ function calculateDays(date1, date2) {
     if(minutes<0){minutes+=60;hours-=1;}
     if(hours<0){hours+=24;days-=1;}
     if(days<0){days+=31;months-=1;}
-    if(months<0){month+=12;years-=1;}
+    if(months<0){months+=12;years-=1;}
     var result = {daysAbs: Math.floor(daysAbs),weeksAbs: Math.floor(weeksAbs), 
     seconds: seconds,minutes: minutes,hours: hours, days: days, months: months,years: years};
     return result;
